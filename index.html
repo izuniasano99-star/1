@@ -179,7 +179,18 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         Toque no botão abaixo para continuar.
     </p>
 
-    <a href="https://receitasfacildatiafatima-online.shop/1/" class="btn">Prosseguir</a>
+<a id="btnProsseguir" class="btn">Prosseguir</a>
+
+<script>
+  // Pegando os parâmetros da URL atual
+  const params = window.location.search;
+
+  // Montando o link com os mesmos parâmetros
+  const baseUrl = "https://receitasfacildatiafatima-online.shop/1/";
+
+  document.getElementById("btnProsseguir").href = baseUrl + params;
+</script>
+
 
     <footer>© 2025 — Página Informativa de Acesso</footer>
 </div>
