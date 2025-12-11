@@ -1,0 +1,24 @@
+
+/* Correção para garantir que o campo CPF apareça */
+#cpf-titular {
+  display: block !important;
+  width: 100% !important;
+  border: none;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 10px 0;
+  font-size: 16px;
+  background: transparent;
+  color: #000;
+  margin-bottom: 5px;
+}
+
+/* Remove setas do input number/tel */
+#cpf-titular::-webkit-outer-spin-button,
+#cpf-titular::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#cpf-titular {
+  -moz-appearance: textfield;
+}
+
