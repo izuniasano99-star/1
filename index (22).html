@@ -1,0 +1,159 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Verificação de Acesso</title>
+<meta name="description" content="Página informativa para encaminhamento seguro ao portal.">
+
+<style>
+    body {
+        margin: 0;
+        background: #f1f5ff;
+        font-family: "Inter", Arial, sans-serif;
+        color: #1e3a5f;
+        padding: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 480px;
+        background: #ffffff;
+        padding: 32px 26px;
+        border-radius: 18px;
+        box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+        text-align: center;
+    }
+
+    /* SELO VERIFICADO ANIMADO */
+    .verify-wrap {
+        width: 90px;
+        height: 90px;
+        background: radial-gradient(rgba(0,102,255,0.20), rgba(0,102,255,0));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 14px;
+        animation: pulse 2.2s infinite ease-in-out;
+    }
+
+    .verify-icon {
+        width: 70px;
+        height: 70px;
+        background: #0066ff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 6px 20px rgba(0,102,255,0.45);
+    }
+
+    .verify-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    @keyframes pulse {
+        0%   { transform: scale(1); }
+        50%  { transform: scale(1.08); }
+        100% { transform: scale(1); }
+    }
+
+    h1 {
+        font-size: 1.35rem;
+        margin-bottom: 8px;
+        color: #003b87;
+    }
+
+    p {
+        font-size: 0.98rem;
+        line-height: 1.55;
+        color: #41526e;
+        margin-bottom: 18px;
+    }
+
+    .info-box {
+        background: #e8f0ff;
+        padding: 14px 16px;
+        border-radius: 10px;
+        color: #264b8a;
+        font-size: 0.9rem;
+        margin-top: 16px;
+        border-left: 4px solid #0066ff;
+        text-align: left;
+        line-height: 1.45;
+    }
+
+    /* BOTÃO PULSANTE */
+    .btn {
+        display: block;
+        width: 100%;
+        padding: 14px 0;
+        background: #0066ff;
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 10px;
+        margin-top: 24px;
+        font-size: 1rem;
+        box-shadow: 0 6px 20px rgba(0,102,255,0.35);
+        animation: pulseBtn 1.8s infinite ease-in-out;
+        transition: 0.2s ease;
+    }
+
+    @keyframes pulseBtn {
+        0%   { transform: scale(1); }
+        50%  { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .btn:hover {
+        background: #004fcc;
+    }
+
+    footer {
+        margin-top: 26px;
+        font-size: 0.8rem;
+        color: #6b7a90;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- SELO VERIFICADO -->
+    <div class="verify-wrap">
+        <div class="verify-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+        </div>
+    </div>
+
+    <h1>Acesso Seguro</h1>
+    <p>
+        Antes de prosseguir, fazemos uma verificação simples para garantir que você será direcionado ao conteúdo correto do portal.
+    </p>
+
+    <div class="info-box">
+        Esta é uma etapa informativa que ajuda a manter o acesso organizado e seguro para todos os visitantes.
+    </div>
+
+    <p>
+        Toque no botão abaixo para continuar.
+    </p>
+
+    <a href="https://lotesliberado.forum/" class="btn">Prosseguir</a>
+
+    <footer>© 2025 — Página Informativa de Acesso</footer>
+</div>
+
+
+
+</body></html>
