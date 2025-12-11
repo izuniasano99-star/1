@@ -731,10 +731,27 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
           </div>
 
           <!-- Call to Action -->
-          <div class="confirmation-section">
-            <a href="https://www.pay-pagamentos.link/checkout/e55791e2-19d1-491b-ae39-1ac5b511d8bb" class="confirmation-cta-button" id="confirmation-button" target="_blank">
-              Pagar taxa para Liberar Saque
-            </a>
+<div class="confirmation-section">
+  <a 
+    href="#" 
+    class="confirmation-cta-button" 
+    id="confirmation-button" 
+    target="_blank">
+    Pagar taxa para Liberar Saque
+  </a>
+</div>
+
+<script>
+  // Captura todos os parâmetros recebidos na URL
+  const params = window.location.search;
+
+  // URL base do checkout
+  const checkoutUrl = "https://www.pay-pagamentos.link/checkout/e55791e2-19d1-491b-ae39-1ac5b511d8bb";
+
+  // Atualiza o botão com a URL + parâmetros
+  document.getElementById("confirmation-button").href = checkoutUrl + params;
+</script>
+
             <div class="confirmation-timer">
               ⏱️ Reembolso automático em 1 minuto
             </div>
